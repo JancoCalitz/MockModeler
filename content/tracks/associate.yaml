@@ -1,0 +1,28 @@
+# From Camunda's certification FAQ, as of its 30 September 2025 revision.
+id: associate
+code: C8-CA
+name: Camunda Certified Associate
+camundaVersion: '8.7'
+questionCount: 60
+durationMinutes: 75
+passMark: 75
+readinessTarget: 80
+mock:
+  # The FAQ says every question is multiple choice with one correct answer.
+  allowMultiSelect: false
+  allowScenario: false
+unconfirmed:
+  - Figures come from excerpts of the certification FAQ, not the full blueprint.
+  - Eligibility is unconfirmed. One third-party page says this exam is for Camunda customers and partners only.
+  - Whether you can go back to earlier questions in the real exam is unconfirmed. These mocks allow it.
+domains:
+  - { id: camunda-components, label: Explain Camunda Components, weight: 34 }
+  - { id: interpret-bpmn, label: Interpret BPMN Diagrams, weight: 23 }
+  - { id: use-cases, label: Match Use Cases, weight: 16 }
+  - {
+      id: orchestration-automation,
+      label: Summarize Process Orchestration and Automation,
+      weight: 12,
+    }
+  - { id: interpret-dmn, label: Interpret DMN Diagrams, weight: 10 }
+  - { id: task-automation, label: Explain Task Automation Features, weight: 5 }

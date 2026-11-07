@@ -1,0 +1,5 @@
+/* An element a question points at, in a BPMN diagram. */
+.diagram-highlight .djs-visual > :nth-child(1) {
+  fill: #fef3c7 !important;
+  stroke: #b45309 !important;
+}

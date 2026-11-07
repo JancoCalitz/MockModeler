@@ -1,0 +1,120 @@
+- track: associate
+  domain: camunda-components
+  summary: >-
+    The largest domain. Know what each component is for, and which one answers a given need.
+  keyPoints:
+    - '**Zeebe** is the engine. It runs the processes, but not your business code.'
+    - '**Operate** monitors and troubleshoots running instances, including incidents.'
+    - '**Tasklist** is where people complete user tasks, out of the box.'
+    - '**Optimize** reports on process data over time, to find bottlenecks.'
+    - '**Web Modeler** runs in a browser, for collaboration. **Desktop Modeler** is installed locally.'
+    - '**Console** creates and manages clusters. **Identity** handles authentication and authorization in Self-Managed.'
+    - '**Connectors** are ready-made integrations you configure in the model.'
+    - An **incident** means an instance is stuck and needs someone to act, as when a job has no retries left.
+  links:
+    - title: Introduction to Zeebe
+      url: https://docs.camunda.io/docs/8.7/components/zeebe/zeebe-overview/
+    - title: Operate
+      url: https://docs.camunda.io/docs/8.7/components/operate/operate-introduction/
+    - title: Tasklist
+      url: https://docs.camunda.io/docs/8.7/components/tasklist/introduction-to-tasklist/
+    - title: Optimize
+      url: https://docs.camunda.io/docs/8.7/components/optimize/what-is-optimize/
+    - title: Console
+      url: https://docs.camunda.io/docs/8.7/components/console/introduction-to-console/
+    - title: Incidents
+      url: https://docs.camunda.io/docs/8.7/components/concepts/incidents/
+
+- track: associate
+  domain: interpret-bpmn
+  summary: >-
+    Follow the token. For any diagram, ask where the token goes next, and what would make it wait.
+  keyPoints:
+    - An **exclusive gateway** takes the first flow whose condition is true, or the default flow. With neither, an incident is created.
+    - A **parallel gateway** splits into all flows, and when joining waits for a token on every incoming flow.
+    - An **event-based gateway** waits, and the first event to occur decides the path.
+    - A **solid** boundary event interrupts the activity. A **dashed** one lets it keep running.
+    - Mixing gateways is a classic error. A parallel split merged by an exclusive gateway runs what follows twice. An exclusive split joined by a parallel gateway gets stuck.
+    - A **call activity** starts a separately deployed process. A subprocess is part of the same one.
+  links:
+    - title: Exclusive gateways
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/exclusive-gateways/
+    - title: Parallel gateways
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/parallel-gateways/
+    - title: Event-based gateways
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/event-based-gateways/
+    - title: Timer events
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/timer-events/
+    - title: Call activities
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/call-activities/
+
+- track: associate
+  domain: use-cases
+  summary: >-
+    Given a business need, pick the feature that fits. Most questions turn on who or what does the
+    work, and what the process is waiting for.
+  keyPoints:
+    - A person decides or acts - a **user task** with a form in Tasklist.
+    - A system with an API - a **connector**, or a job worker for custom logic.
+    - A system with no API - **RPA**.
+    - Rules that change often - **DMN**, through a business rule task.
+    - Waiting for a specific external reply - a **message** with a correlation key.
+    - Short outages - **job retries**, then an incident.
+    - Finding bottlenecks - **Optimize**. Fixing one stuck instance - **Operate**.
+  links:
+    - title: Messages
+      url: https://docs.camunda.io/docs/8.7/components/concepts/messages/
+    - title: Robotic process automation
+      url: https://docs.camunda.io/docs/8.7/components/rpa/overview/
+    - title: Business rule tasks
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/business-rule-tasks/
+
+- track: associate
+  domain: orchestration-automation
+  summary: >-
+    Know the difference between automating one task and coordinating a whole process across people
+    and systems.
+  keyPoints:
+    - '**Task automation** handles one step. **Orchestration** coordinates every step, from start to finish.'
+    - The engine **saves each instance's state**, so a process can wait for weeks with nothing running.
+    - An **executable model** means the diagram business and IT discuss is what actually runs.
+    - An orchestrator makes a flow **visible and changeable** in one place, unlike calls hidden in several services' code.
+  links:
+    - title: Concepts overview
+      url: https://docs.camunda.io/docs/8.7/components/concepts/concepts-overview/
+    - title: Processes
+      url: https://docs.camunda.io/docs/8.7/components/concepts/processes/
+
+- track: associate
+  domain: interpret-dmn
+  summary: >-
+    Read the table row by row. In a rule, every input entry must match, and `-` matches anything.
+    Then apply the hit policy.
+  keyPoints:
+    - '**Unique** - one rule may match. More than one fails evaluation, and raises an incident in a process.'
+    - '**First** - read from the top, and take the first match.'
+    - '**Any** - several may match, but they must give the same output.'
+    - '**Collect** and **Rule order** - return the outputs of every match, as a list.'
+    - In an input entry, a comma means "any of these", and `not(...)` excludes values.
+  links:
+    - title: Hit policies
+      url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    - title: Rules
+      url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-rule/
+
+- track: associate
+  domain: task-automation
+  summary: >-
+    The small domain. Know which features automate a single step, and when each one applies.
+  keyPoints:
+    - A **service task** creates a job, for a job worker or connector to carry out.
+    - A **business rule task** evaluates a DMN decision inside the engine, with no worker.
+    - The **REST connector** calls an API with configuration, not code.
+    - '**RPA** automates steps in applications that have no API.'
+  links:
+    - title: Service tasks
+      url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/service-tasks/
+    - title: REST connector
+      url: https://docs.camunda.io/docs/8.7/components/connectors/protocol/rest/
+    - title: Job workers
+      url: https://docs.camunda.io/docs/8.7/components/concepts/job-workers/

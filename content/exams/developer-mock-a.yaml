@@ -1,0 +1,24 @@
+id: developer-mock-a
+track: developer
+name: Developer Mock A (20 questions)
+questions:
+  - d-ext-job-worker-annotation
+  - d-feel-if
+  - d-model-bpmn-error
+  - d-dev-versioning
+  - d-ext-idempotent
+  - d-dmn-rule-order
+  - d-feel-filter
+  - d-form-binding
+  - d-model-fix-merge
+  - d-ext-fail-job
+  - d-dev-testing
+  - d-conf-output-mapping
+  - d-conn-secrets
+  - d-ext-fetch-variables
+  - d-model-no-default
+  - d-feel-missing
+  - d-dmn-range
+  - d-ext-message-correlation
+  - d-dev-error-types
+  - d-conf-message-ttl

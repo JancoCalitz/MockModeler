@@ -1,0 +1,13 @@
+- id: a-case-claims
+  track: associate
+  title: Fictional case study, travel insurance claims
+  body: |
+    A fictional travel insurer wants to orchestrate its claims process on Camunda 8.
+
+    - A customer submits a claim on the website, which starts a process instance.
+    - The system checks whether the claim can be approved automatically. The limits depend on the
+      country and the policy type, and the compliance team changes them about once a month.
+    - Any other claim goes to a claims handler, who reviews the documents and decides. The company
+      does not want to build its own screen for this.
+    - Approved claims are paid through a payment system, which is occasionally offline for several
+      hours at night.

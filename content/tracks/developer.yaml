@@ -1,0 +1,28 @@
+# Time, pass mark, and version from Camunda's certification FAQ, as of its 1 April 2026 revision.
+id: developer
+code: C8-CP-DV
+name: Camunda Certified Professional - Developer
+camundaVersion: '8.8'
+questionCount: 60
+durationMinutes: 90
+passMark: 65
+readinessTarget: 80
+mock:
+  # Unconfirmed for this exam. Turn these on if the blueprint says it uses these question types.
+  allowMultiSelect: false
+  allowScenario: false
+unconfirmed:
+  - The 60-question count comes from a third-party site, not from Camunda.
+  - The question types are unconfirmed, so these mocks use single-answer questions only.
+  - The domain weightings may predate the April 2026 blueprint revision.
+  - Eligibility is unconfirmed. The FAQ asks for hands-on Camunda 8 experience.
+  - Whether you can go back to earlier questions in the real exam is unconfirmed. These mocks allow it.
+domains:
+  - { id: extensions-integrations, label: Developing Extensions and Integrations, weight: 25 }
+  - { id: configuring-processes, label: Configuring Processes, weight: 22 }
+  - { id: modeling, label: Modeling, weight: 15 }
+  - { id: development-process, label: Managing the Development Process, weight: 15 }
+  - { id: decisions-rules, label: Configuring Decisions and Business Rules, weight: 11 }
+  - { id: connectors, label: Configuring Connectors, weight: 6 }
+  - { id: forms, label: Configuring Forms, weight: 5 }
+  - { id: dev-environment, label: Setting up a Development Environment, weight: 1 }

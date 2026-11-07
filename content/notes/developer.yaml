@@ -1,0 +1,146 @@
+- track: developer
+  domain: extensions-integrations
+  summary: >-
+    The largest domain, and the most hands-on. Be comfortable with how workers talk to Zeebe, and
+    what happens when they fail.
+  keyPoints:
+    - Job delivery is **at least once**, so worker code must be **idempotent**.
+    - A job not completed within its **timeout** can be reassigned to another worker.
+    - '**Fail job** sets the remaining retries. At zero, an incident is raised.'
+    - '**Throw error** reports a BPMN error, matched by code. If nothing catches it, an incident is raised.'
+    - '`fetchVariables` limits the variables a worker receives. An empty list means all of them.'
+    - In Spring Boot, `@JobWorker` registers a worker and `@Deployment` deploys resources at start-up.
+    - A message correlates by its **name and correlation key**.
+    - The **Connector SDK** builds custom connectors, with `@OutboundConnector`.
+  links:
+    - title: Job workers
+      url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    - title: Camunda Spring Boot Starter
+      url: https://docs.camunda.io/docs/8.8/apis-tools/camunda-spring-boot-starter/getting-started/
+    - title: Java client
+      url: https://docs.camunda.io/docs/8.8/apis-tools/java-client/getting-started/
+    - title: Orchestration Cluster REST API
+      url: https://docs.camunda.io/docs/8.8/apis-tools/orchestration-cluster-api-rest/orchestration-cluster-api-rest-overview/
+    - title: Connector SDK
+      url: https://docs.camunda.io/docs/8.8/components/connectors/custom-built-connectors/connector-sdk/
+
+- track: developer
+  domain: configuring-processes
+  summary: >-
+    How to make a model executable: expressions, variables, multi-instance, and messages.
+  keyPoints:
+    - FEEL expressions in a Modeler field start with `=`. Lists are **indexed from 1**, and a missing entry gives `null`.
+    - With **no output mapping**, a job's variables are merged into the instance. With one, only the mapped results are.
+    - Multi-instance uses `inputCollection` and `inputElement`, then `outputCollection` and `outputElement`.
+    - A message's **time-to-live** buffers it for a subscription that opens later.
+    - A task definition's `retries` defaults to **three**.
+  links:
+    - title: Variables
+      url: https://docs.camunda.io/docs/8.8/components/concepts/variables/
+    - title: FEEL control flow
+      url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-control-flow/
+    - title: FEEL data types
+      url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-data-types/
+    - title: Multi-instance
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/multi-instance/
+    - title: Messages
+      url: https://docs.camunda.io/docs/8.8/components/concepts/messages/
+
+- track: developer
+  domain: modeling
+  summary: >-
+    Spot what will go wrong when a model runs, and choose the fix. These questions reward tracing
+    tokens through the diagram.
+  keyPoints:
+    - Merge a parallel split with a **parallel** gateway, and an exclusive split with an **exclusive** one.
+    - An exclusive gateway with no true condition and no default flow creates an **incident**.
+    - An event-based gateway's flows must lead to **intermediate catch events**, of type timer, message, or signal.
+    - An interrupting timer boundary event needs a duration or date. A **cycle**, such as `R3/PT4H`, needs a non-interrupting one.
+    - A BPMN error is caught by matching its **code**, starting at the scope where it was thrown.
+  links:
+    - title: Error events
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/error-events/
+    - title: Event-based gateways
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/event-based-gateways/
+    - title: Timer events
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/timer-events/
+    - title: Exclusive gateways
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/exclusive-gateways/
+
+- track: developer
+  domain: development-process
+  summary: >-
+    Versioning, testing, and handling errors in a way that holds up in production.
+  keyPoints:
+    - Deploying creates a new version. **Running instances stay** on theirs, unless migrated.
+    - '**Migration** needs a plan that maps source elements to target elements.'
+    - '`bindingType` chooses a called resource: `latest`, `deployment`, or `versionTag`.'
+    - '**Camunda Process Test** runs JUnit 5 tests against a real engine.'
+    - Use a **BPMN error** for an expected business outcome, and **fail the job** for a technical problem.
+  links:
+    - title: Versioning process definitions
+      url: https://docs.camunda.io/docs/8.8/components/best-practices/operations/versioning-process-definitions/
+    - title: Process instance migration
+      url: https://docs.camunda.io/docs/8.8/components/concepts/process-instance-migration/
+    - title: Camunda Process Test
+      url: https://docs.camunda.io/docs/8.8/apis-tools/testing/getting-started/
+    - title: Dealing with problems and exceptions
+      url: https://docs.camunda.io/docs/8.8/components/best-practices/development/dealing-with-problems-and-exceptions/
+
+- track: developer
+  domain: decisions-rules
+  summary: >-
+    Be able to evaluate a table by hand, under any hit policy, and to connect it to a process.
+  keyPoints:
+    - '**Unique** fails if more than one rule matches. **Any** fails if matches give different outputs.'
+    - '**First** takes the first match. **Rule order** and **Collect** return a list.'
+    - In a range, `[` and `]` include the end value, while `(` and `)` exclude it.
+    - A business rule task's `zeebe:calledDecision` needs `decisionId` and `resultVariable`.
+  links:
+    - title: Hit policies
+      url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-hit-policy/
+    - title: Rules
+      url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-rule/
+    - title: Business rule tasks
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/business-rule-tasks/
+
+- track: developer
+  domain: connectors
+  summary: >-
+    Know the connector types, and how to use them safely.
+  keyPoints:
+    - '**Outbound** connectors call out from a task. **Inbound** ones let external systems reach Camunda, and are modeled as catch events.'
+    - '**Protocol** connectors can be either, supporting technical protocols such as REST.'
+    - Reference secrets as `{{secrets.MY_API_KEY}}`. Plain `secrets.*` is deprecated.
+  links:
+    - title: Connector types
+      url: https://docs.camunda.io/docs/8.8/components/connectors/connector-types/
+    - title: Use connectors
+      url: https://docs.camunda.io/docs/8.8/components/connectors/use-connectors/
+    - title: Inbound connectors
+      url: https://docs.camunda.io/docs/8.8/components/connectors/use-connectors/inbound/
+
+- track: developer
+  domain: forms
+  summary: >-
+    How a form links to a user task, and to the process's data.
+  keyPoints:
+    - A form links to a user task by form ID, through `zeebe:formDefinition`.
+    - '`bindingType` is `latest`, `deployment`, or `versionTag`.'
+    - A field's **key** binds it to a form variable.
+  links:
+    - title: User tasks
+      url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/user-tasks/
+    - title: Text field reference
+      url: https://docs.camunda.io/docs/8.8/components/modeler/forms/form-element-library/forms-element-library-textfield/
+
+- track: developer
+  domain: dev-environment
+  summary: >-
+    Only about 1% of the exam, but you need a working setup to learn everything else.
+  keyPoints:
+    - '**Camunda 8 Run** runs the Orchestration Cluster, connectors, and Elasticsearch locally.'
+    - Start it with `./start.sh` or `./c8run start`, or `.\c8run.exe start` on Windows.
+  links:
+    - title: Camunda 8 Run
+      url: https://docs.camunda.io/docs/8.8/self-managed/quickstart/developer-quickstart/c8run/

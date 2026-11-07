@@ -1,0 +1,24 @@
+id: developer-mock-b
+track: developer
+name: Developer Mock B (20 questions)
+questions:
+  - d-ext-timeout
+  - d-feel-index
+  - d-model-event-gateway-rule
+  - d-dev-migration
+  - d-dmn-any
+  - d-ext-unhandled-error
+  - d-feel-for
+  - d-form-key
+  - d-model-fix-join
+  - d-ext-rest-api
+  - d-conf-multi-instance
+  - d-conn-inbound
+  - d-dmn-first-match
+  - d-ext-deploy-client
+  - d-model-timer-cycle
+  - d-env-c8run
+  - d-dmn-business-rule-config
+  - d-ext-connector-sdk
+  - d-dev-version-tag
+  - d-conf-default-retries

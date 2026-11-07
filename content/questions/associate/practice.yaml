@@ -1,0 +1,106 @@
+# Practice only: the real exam is single-answer, so timed mocks leave these out.
+- id: a-case-review-screen
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  scenario: a-case-claims
+  stem: Where does a claims handler see and complete the review step, with no custom development?
+  options: [Tasklist, Operate, Optimize, Console]
+  correctIndexes: [0]
+  explanation: Tasklist is the out-of-the-box interface for people to complete user tasks.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/tasklist/introduction-to-tasklist/
+    version: '8.7'
+
+- id: a-case-threshold
+  track: associate
+  domain: use-cases
+  difficulty: medium
+  scenario: a-case-claims
+  stem: How should the company implement the auto-approval limits?
+  options:
+    - A DMN decision, called from a business rule task
+    - A new exclusive gateway for each limit in the diagram
+    - Limits written into the payment job worker's code
+    - A user task that asks a handler to look up the limit
+  correctIndexes: [0]
+  explanation: >-
+    The limits change often, and belong to the compliance team, so a decision table keeps them
+    separate from the process and from code.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/business-rule-tasks/
+    version: '8.7'
+
+- id: a-case-outage
+  track: associate
+  domain: camunda-components
+  difficulty: medium
+  scenario: a-case-claims
+  stem: >-
+    The payment system was down overnight, and some claims stopped with no retries left. It is now
+    back. What should the operations team do?
+  options:
+    - Find the incidents in Operate, and retry them
+    - Ask each claimant to submit a new claim
+    - Delete the instances in Optimize, and start them again
+    - Deploy a new version of the process in Web Modeler
+  correctIndexes: [0]
+  explanation: >-
+    Running out of retries creates an incident, which leaves the instance waiting at that step.
+    Once the cause is gone, the incident can be resolved in Operate, and the instance carries on.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/operate/operate-introduction/
+    version: '8.7'
+
+- id: a-multi-operate-uses
+  track: associate
+  domain: camunda-components
+  difficulty: medium
+  multiSelect: true
+  stem: Which of these can you do in Operate? Select all that apply.
+  options:
+    - Resolve incidents
+    - Update the variables of a process instance
+    - Design a new BPMN diagram
+    - Complete a user's task form on their behalf in their inbox
+  correctIndexes: [0, 1]
+  explanation: >-
+    Operate monitors and troubleshoots instances, including resolving incidents and updating
+    variables. Diagrams are designed in a Modeler, and user tasks are worked on in Tasklist.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/operate/operate-introduction/
+    version: '8.7'
+
+- id: a-multi-waiting-elements
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  multiSelect: true
+  stem: At which of these elements can a process instance wait for something to happen?
+  options:
+    - An intermediate timer catch event
+    - An intermediate message catch event
+    - An exclusive gateway
+    - A diverging parallel gateway
+  correctIndexes: [0, 1]
+  explanation: >-
+    Catch events wait for their timer or message. An exclusive gateway decides at once, and a
+    parallel gateway that splits flows passes on at once.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/message-events/
+    version: '8.7'
+
+- id: a-multi-hit-policies
+  track: associate
+  domain: interpret-dmn
+  difficulty: medium
+  multiSelect: true
+  stem: Which hit policies return the output of a single rule, not a list of outputs?
+  options: [Unique, First, Collect, Rule order]
+  correctIndexes: [0, 1]
+  explanation: >-
+    Unique allows one match, and First takes the first match. Collect and Rule order can return
+    several outputs, as a list.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.7'

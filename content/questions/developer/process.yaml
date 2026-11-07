@@ -1,0 +1,109 @@
+- id: d-dev-versioning
+  track: developer
+  domain: development-process
+  difficulty: easy
+  stem: You deploy a changed version of a process. What happens to instances already running?
+  options:
+    - They stay on the version they started with, unless you migrate them
+    - They move to the new version the next time they reach a wait state
+    - They are cancelled, and need to be started again on the new version
+    - They raise an incident until you choose a version for each of them
+  correctIndexes: [0]
+  explanation: >-
+    Deploying creates a new version for new instances, and running instances keep their version.
+    Moving them is a separate step: process instance migration.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/best-practices/operations/versioning-process-definitions/
+    version: '8.8'
+
+- id: d-dev-migration
+  track: developer
+  domain: development-process
+  difficulty: medium
+  stem: What must you provide to migrate a running process instance to a new process definition?
+  options:
+    - A migration plan, with mapping instructions to the target definition
+    - A new deployment, with the same process ID and no other changes
+    - A list of the variables to delete from the instance
+    - A copy of the instance's full history, to import after the move
+  correctIndexes: [0]
+  explanation: >-
+    A migration plan maps source element IDs to target element IDs, to make clear where each active
+    element should go. You can also migrate instances through Operate.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/process-instance-migration/
+    version: '8.8'
+
+- id: d-dev-testing
+  track: developer
+  domain: development-process
+  difficulty: medium
+  stem: Which library lets you write JUnit tests that run your process against a real engine?
+  options:
+    - Camunda Process Test
+    - The Connector SDK
+    - The bpmn-js viewer
+    - Optimize's reports
+  correctIndexes: [0]
+  explanation: >-
+    Camunda Process Test (CPT), introduced in 8.8, runs process tests against a managed runtime
+    based on Testcontainers, or a remote runtime, using JUnit 5.
+  source:
+    url: https://docs.camunda.io/docs/8.8/apis-tools/testing/getting-started/
+    version: '8.8'
+
+- id: d-dev-version-tag
+  track: developer
+  domain: development-process
+  difficulty: medium
+  stem: >-
+    A call activity must always start the newest release of a child process marked `v2`, even if a
+    newer untagged version is deployed. Which `bindingType` do you use?
+  options: [versionTag, latest, deployment, migration]
+  correctIndexes: [0]
+  explanation: >-
+    `versionTag` picks the latest deployed version annotated with the given tag. `latest` would take
+    the newer untagged version.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/call-activities/
+    version: '8.8'
+
+- id: d-dev-error-types
+  track: developer
+  domain: development-process
+  difficulty: medium
+  stem: >-
+    A credit check returns "customer has insufficient funds". The team wants the process to follow a
+    modeled alternative path. How should the worker report this?
+  options:
+    - Throw a BPMN error, as this is an expected business outcome
+    - Fail the job, so that Zeebe retries the credit check
+    - Complete the job with no variables, and let the instance end
+    - Leave the job to time out, so another worker can take it
+  correctIndexes: [0]
+  explanation: >-
+    A BPMN error is for a business problem the model handles. Failing a job, with retries and
+    eventually an incident, is for technical problems such as an unavailable service.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/best-practices/development/dealing-with-problems-and-exceptions/
+    version: '8.8'
+
+- id: d-env-c8run
+  track: developer
+  domain: dev-environment
+  difficulty: easy
+  stem: >-
+    You want to run the Orchestration Cluster on your laptop, with minimal configuration, to develop
+    and test processes. What is designed for this?
+  options:
+    - Camunda 8 Run
+    - The Helm charts on a production Kubernetes cluster
+    - A Camunda 8 SaaS production cluster
+    - Optimize in its stand-alone mode
+  correctIndexes: [0]
+  explanation: >-
+    Camunda 8 Run runs the Orchestration Cluster, connectors, and Elasticsearch on your local
+    machine, for developers who want to model, deploy, and test.
+  source:
+    url: https://docs.camunda.io/docs/8.8/self-managed/quickstart/developer-quickstart/c8run/
+    version: '8.8'

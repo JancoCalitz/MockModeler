@@ -1,0 +1,241 @@
+- id: a-task-rest-connector
+  track: associate
+  domain: task-automation
+  difficulty: easy
+  stem: Which approach automates a call to a REST API from a process with the least custom code?
+  options:
+    - A service task using the REST connector
+    - A user task with a form for pasting the response
+    - A DMN table listing the API's possible responses
+    - A timer event set to the API's expected response time
+  correctIndexes: [0]
+  explanation: >-
+    The REST connector lets you configure the request in the model, and map the response to process
+    variables, without writing a worker.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/connectors/protocol/rest/
+    version: '8.7'
+
+- id: a-task-business-rule
+  track: associate
+  domain: task-automation
+  difficulty: easy
+  stem: Which task type evaluates a DMN decision directly in the engine, with no worker needed?
+  options: [Business rule task, User task, Send task, Manual task]
+  correctIndexes: [0]
+  explanation: >-
+    A business rule task linked to a DMN decision is evaluated by Zeebe, which stores the result in
+    a process variable.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/business-rule-tasks/
+    version: '8.7'
+
+- id: a-orch-definition
+  track: associate
+  domain: orchestration-automation
+  difficulty: easy
+  stem: What does process orchestration mean?
+  options:
+    - Coordinating people, systems, and devices across an end-to-end process
+    - Automating one repetitive step inside a single application
+    - Drawing diagrams of how a process works, for documentation only
+    - Moving data in batches between two databases overnight
+  correctIndexes: [0]
+  explanation: >-
+    Orchestration coordinates all the endpoints involved in a process from start to finish. Task
+    automation covers one step, which an orchestrated process may include.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/concepts-overview/
+    version: '8.7'
+
+- id: a-orch-task-vs-process
+  track: associate
+  domain: orchestration-automation
+  difficulty: medium
+  stem: How does process automation differ from task automation?
+  options:
+    - It manages the flow across many tasks, not just how one task gets done
+    - It removes every person from the process, unlike task automation
+    - It only works where every system involved has a modern API
+    - It replaces the need to integrate with systems outside the engine
+  correctIndexes: [0]
+  explanation: >-
+    Task automation handles an individual step. Process automation controls the order, conditions,
+    and waiting across all steps, which can include people as well as systems.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/concepts-overview/
+    version: '8.7'
+
+- id: a-orch-executable
+  track: associate
+  domain: orchestration-automation
+  difficulty: easy
+  stem: What is a main benefit of using an executable BPMN model in Camunda?
+  options:
+    - The diagram that business and IT discuss is what the engine runs
+    - The model never needs to change once it has been deployed
+    - The engine writes the business logic of each task from the diagram
+    - The process no longer needs monitoring once it is in production
+  correctIndexes: [0]
+  explanation: >-
+    Because the engine executes the BPMN model, the diagram stays an accurate picture of what
+    happens, which gives business and IT a shared view.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/processes/
+    version: '8.7'
+
+- id: a-orch-long-running
+  track: associate
+  domain: orchestration-automation
+  difficulty: medium
+  stem: A process has to wait three weeks for a customer's reply. How does Zeebe handle this?
+  options:
+    - The instance's state is saved in the engine, so it waits without a running thread
+    - A job worker has to stay connected and running for the full three weeks
+    - The instance is ended, and the model starts again when the reply arrives
+    - An operator has to resume the instance by hand when the reply arrives
+  correctIndexes: [0]
+  explanation: >-
+    The engine persists each instance's state, so a long wait uses no worker. A message, timer, or
+    other event moves the instance on when the time comes.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/messages/
+    version: '8.7'
+
+- id: a-orch-visibility
+  track: associate
+  domain: orchestration-automation
+  difficulty: medium
+  stem: >-
+    A process runs through point-to-point calls hidden in several services' code. What does moving
+    it to an orchestration engine mainly add?
+  options:
+    - One visible place that shows the flow and where each instance is
+    - Faster individual API calls between the services
+    - Automatic rewriting of the services into one application
+    - An end to the need for error handling in the services
+  correctIndexes: [0]
+  explanation: >-
+    An orchestrator makes the flow explicit, so you can see, change, and monitor it in one place. It
+    does not make each call faster, or remove the need to handle errors.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/concepts-overview/
+    version: '8.7'
+
+- id: a-use-human-approval
+  track: associate
+  domain: use-cases
+  difficulty: easy
+  stem: Expense claims over a limit need a manager's sign-off. Which Camunda features fit best?
+  options:
+    - A user task with a form, completed in Tasklist
+    - A service task whose job worker approves each claim
+    - A timer event that approves each claim after a day
+    - A business rule task that sends the manager an email
+  correctIndexes: [0]
+  explanation: >-
+    A decision by a person is modelled as a user task. Tasklist gives the manager somewhere to see
+    the form, and complete it.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/tasklist/introduction-to-tasklist/
+    version: '8.7'
+
+- id: a-use-legacy-rpa
+  track: associate
+  domain: use-cases
+  difficulty: medium
+  stem: >-
+    A process has to enter data into an old desktop application that has no API. Which Camunda
+    feature is designed for this?
+  options:
+    - Robotic process automation (RPA)
+    - A DMN decision table
+    - An event-based gateway
+    - Process instance migration
+  correctIndexes: [0]
+  explanation: >-
+    Camunda uses RPA to integrate legacy applications without accessible APIs, by automating the
+    steps a person would take in them.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/rpa/overview/
+    version: '8.7'
+
+- id: a-use-rules-change
+  track: associate
+  domain: use-cases
+  difficulty: easy
+  stem: >-
+    Pricing rules change every month, and business analysts want to maintain them without changing
+    the process diagram. What should you use?
+  options:
+    - A DMN decision called from a business rule task
+    - A chain of exclusive gateways in the BPMN diagram
+    - A job worker with the rules written into its code
+    - A user task that asks someone to work out the price
+  correctIndexes: [0]
+  explanation: >-
+    DMN keeps business rules apart from the process flow, in a table that analysts can read and
+    maintain. A business rule task connects the two.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/business-rule-tasks/
+    version: '8.7'
+
+- id: a-use-wait-partner
+  track: associate
+  domain: use-cases
+  difficulty: medium
+  stem: >-
+    After ordering from a supplier, a process must pause until that supplier confirms that specific
+    order. How should you model this?
+  options:
+    - A message catch event, correlated using the order number
+    - A parallel gateway, joined when the supplier replies
+    - A user task for the supplier in Tasklist
+    - A timer event set to the supplier's average reply time
+  correctIndexes: [0]
+  explanation: >-
+    A message catch event waits for a named message. The correlation key, here the order number,
+    makes sure the message reaches the right process instance.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/messages/
+    version: '8.7'
+
+- id: a-use-start-webhook
+  track: associate
+  domain: use-cases
+  difficulty: medium
+  stem: >-
+    A web shop should start a process whenever it sends an HTTP request about a new order, without
+    anyone writing integration code. What fits best?
+  options:
+    - An inbound webhook connector on a start event
+    - A user task that someone completes for each order
+    - A timer start event that checks the shop every minute
+    - A business rule task that lists the shop's orders
+  correctIndexes: [0]
+  explanation: >-
+    Inbound connectors let outside systems reach Camunda. Modeled on a start event, a webhook
+    connector starts a new process instance for each request.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/connectors/use-connectors/inbound/
+    version: '8.7'
+
+- id: a-use-transient-failure
+  track: associate
+  domain: use-cases
+  difficulty: medium
+  stem: >-
+    A payment service is sometimes unavailable for a few minutes. Which Camunda behaviour helps most
+    with short outages like these?
+  options:
+    - Job retries, followed by an incident if the retries run out
+    - A DMN table that predicts when the service will be down
+    - A user task that asks someone to check the service first
+    - A new deployment of the process after each outage
+  correctIndexes: [0]
+  explanation: >-
+    A worker can report a failure and leave retries for later. If they run out, an incident makes the
+    problem visible in Operate, where someone can retry after the outage.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/job-workers/
+    version: '8.7'

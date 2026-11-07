@@ -1,0 +1,133 @@
+- id: a-dmn-unique-output
+  track: associate
+  domain: interpret-dmn
+  difficulty: easy
+  stem: What does this decision table return for this customer?
+  dmn:
+    name: Shipping fee
+    hitPolicy: UNIQUE
+    inputs:
+      - { label: Customer type, expression: customerType }
+      - { label: Order total, expression: orderTotal }
+    output: { label: Fee, name: fee }
+    rules:
+      - { when: ['"Gold"', '-'], then: '0' }
+      - { when: ['"Standard"', '>= 100'], then: '5' }
+      - { when: ['"Standard"', '< 100'], then: '15' }
+    given: { customerType: Standard, orderTotal: 80 }
+  options: ['15', '0', '5', '20']
+  correctIndexes: [0]
+  explanation: >-
+    Rule 3 is the only rule whose every input entry is true: the type is Standard and 80 is below
+    100. A `-` means any value matches, which is why rule 1 turns on the customer type alone.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.7'
+
+- id: a-dmn-first
+  track: associate
+  domain: interpret-dmn
+  difficulty: medium
+  stem: Two rules match this applicant. What does the table return?
+  dmn:
+    name: Loan review
+    hitPolicy: FIRST
+    inputs:
+      - { label: Credit score, expression: score }
+      - { label: Amount, expression: amount }
+    output: { label: Review, name: review }
+    rules:
+      - { when: ['< 500', '-'], then: '"Reject"' }
+      - { when: ['-', '> 50000'], then: '"Manual"' }
+      - { when: ['>= 700', '-'], then: '"Automatic"' }
+    given: { score: 720, amount: 80000 }
+  options: ['"Manual"', '"Automatic"', '"Reject"', '["Manual", "Automatic"]']
+  correctIndexes: [0]
+  explanation: >-
+    Rules 2 and 3 both match. With the First hit policy, the rules are read from top to bottom, and
+    the first match gives the result.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.7'
+
+- id: a-dmn-collect
+  track: associate
+  domain: interpret-dmn
+  difficulty: medium
+  stem: What does this table return for a holiday booking?
+  dmn:
+    name: Required documents
+    hitPolicy: COLLECT
+    inputs:
+      - { label: Trip type, expression: tripType }
+      - { label: Days, expression: days }
+    output: { label: Document, name: document }
+    rules:
+      - { when: ['"Holiday"', '-'], then: '"Passport"' }
+      - { when: ['"Business"', '-'], then: '"Invitation"' }
+      - { when: ['-', '> 30'], then: '"Visa"' }
+    given: { tripType: Holiday, days: 45 }
+  options: ['["Passport", "Visa"]', '"Passport"', '"Visa"', '["Passport", "Invitation", "Visa"]']
+  correctIndexes: [0]
+  explanation: >-
+    The Collect hit policy returns the outputs of every rule that matches, as a list. Rules 1 and 3
+    match this booking.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.7'
+
+- id: a-dmn-which-rules
+  track: associate
+  domain: interpret-dmn
+  difficulty: easy
+  stem: Which rules match this request?
+  dmn:
+    name: Access level
+    hitPolicy: COLLECT
+    ask: rules
+    inputs:
+      - { label: Department, expression: department }
+      - { label: Years employed, expression: years }
+    output: { label: Access, name: access }
+    rules:
+      - { when: ['"Finance"', '-'], then: '"Ledger"' }
+      - { when: ['"Finance","Audit"', '>= 2'], then: '"Reports"' }
+      - { when: ['not("Finance")', '-'], then: '"Portal"' }
+    given: { department: Finance, years: 1 }
+  options: ['Rule 1', 'Rules 1, 2', 'Rules 1, 3', 'Rules 1, 2, 3']
+  correctIndexes: [0]
+  explanation: >-
+    Rule 1 matches on department alone. Rule 2's department matches, as a comma means "any of these",
+    but one year is below two, and every input must match. Rule 3 excludes Finance.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-rule/
+    version: '8.7'
+
+- id: a-dmn-unique-violated
+  track: associate
+  domain: interpret-dmn
+  difficulty: medium
+  stem: This table runs in a business rule task. What happens with this input?
+  dmn:
+    name: Risk class
+    hitPolicy: UNIQUE
+    expectedResult: hit policy violation
+    inputs:
+      - { label: Age, expression: age }
+    output: { label: Risk, name: risk }
+    rules:
+      - { when: ['<= 30'], then: '"High"' }
+      - { when: ['>= 30'], then: '"Low"' }
+    given: { age: 30 }
+  options:
+    - Evaluation fails, as two rules match, and an incident is raised
+    - The table returns "High", as rule 1 comes first
+    - The table returns "Low", as rule 2 was evaluated last
+    - The table returns the two values as a list
+  correctIndexes: [0]
+  explanation: >-
+    An age of 30 matches both rules, and the Unique hit policy allows only one match. The table is
+    considered invalid, evaluation fails, and an incident is raised in the process instance.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.7'

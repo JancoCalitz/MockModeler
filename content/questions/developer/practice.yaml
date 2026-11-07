@@ -1,0 +1,111 @@
+# Practice only: this track's mocks stay single-answer until the blueprint confirms otherwise.
+- id: d-case-duplicate-charge
+  track: developer
+  domain: extensions-integrations
+  difficulty: hard
+  scenario: d-case-payments
+  stem: Some customers were charged twice during a slow period. What is the most likely cause?
+  options:
+    - A job timed out and was reassigned while the first worker was still charging
+    - The exclusive gateway took two flows, as its two conditions were true
+    - Zeebe published the payment message to two brokers at the same time
+    - Elasticsearch replayed the job from its index after a restart
+  correctIndexes: [0]
+  explanation: >-
+    A job that passes its timeout can be reassigned, so two workers may process it. Job delivery is
+    at least once, so the worker must be idempotent, for example by using a payment ID as an
+    idempotency key.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-case-declined
+  track: developer
+  domain: development-process
+  difficulty: medium
+  scenario: d-case-payments
+  stem: How should the worker report that the provider declined a card?
+  options:
+    - Throw a BPMN error, and catch it with an error boundary event
+    - Fail the job with its retries set to zero
+    - Complete the job, and rely on an incident being raised
+    - Fail the job, and let its default retries run out
+  correctIndexes: [0]
+  explanation: >-
+    A declined card is an expected business result that the model should handle. Retrying would not
+    help, and an incident would need an operator for something that is not a technical fault.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/best-practices/development/dealing-with-problems-and-exceptions/
+    version: '8.8'
+
+- id: d-case-gateway-down
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  scenario: d-case-payments
+  stem: >-
+    How should the worker report that the payment provider returned an HTTP 503, when the provider
+    usually recovers within minutes?
+  options:
+    - Fail the job with fewer retries left, and a retry back-off
+    - Throw a BPMN error, so the customer is asked for another card
+    - Complete the job, and flag the payment for later review
+    - Stop the worker, so that no more jobs are activated
+  correctIndexes: [0]
+  explanation: >-
+    This is a temporary technical problem. Failing the job, with retries and a delay, gives the
+    provider time to recover, and an incident makes it visible if it does not.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-multi-incident-causes
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  multiSelect: true
+  stem: Which of these can create an incident? Select all that apply.
+  options:
+    - A job fails with no retries left
+    - A condition does not return true or false
+    - A user task waits for longer than a week
+    - A message is published with no matching subscription
+  correctIndexes: [0, 1]
+  explanation: >-
+    Failed jobs with no retries and conditions that do not give a boolean both create incidents. A
+    waiting user task is normal, and an unmatched message is buffered or discarded.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/incidents/
+    version: '8.8'
+
+- id: d-multi-binding-types
+  track: developer
+  domain: forms
+  difficulty: easy
+  multiSelect: true
+  stem: Which of these are valid `bindingType` values for a form linked to a user task?
+  options: [latest, deployment, newest, pinned]
+  correctIndexes: [0, 1]
+  explanation: The supported values are `latest`, `deployment`, and `versionTag`.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/user-tasks/
+    version: '8.8'
+
+- id: d-multi-worker-options
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  multiSelect: true
+  stem: Which properties can a job worker set when it requests jobs? Select all that apply.
+  options:
+    - The timeout for which a job is assigned to it
+    - The list of variables to fetch
+    - The correlation key of the job
+    - The BPMN process ID to run next
+  correctIndexes: [0, 1]
+  explanation: >-
+    A worker sets its timeout and `fetchVariables`, along with its identifier. Correlation keys
+    belong to messages, and a worker does not choose what the process does next.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'

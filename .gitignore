@@ -1,0 +1,8 @@
+node_modules/
+dist/
+dist-locked/
+coverage/
+*.tsbuildinfo
+
+# Local configuration and secrets
+.env

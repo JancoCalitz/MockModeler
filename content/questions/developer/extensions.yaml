@@ -1,0 +1,180 @@
+- id: d-ext-job-worker-annotation
+  track: developer
+  domain: extensions-integrations
+  difficulty: easy
+  stem: >-
+    With the Camunda Spring Boot Starter, how do you turn a Spring bean's method into a job worker?
+  options:
+    - Annotate the method with @JobWorker
+    - Annotate the method with @Deployment
+    - Annotate the method with @CamundaSpringProcessTest
+    - Annotate the method with @OutboundConnector
+  correctIndexes: [0]
+  explanation: >-
+    `@JobWorker` registers the method as a worker. By default, the method's name is used as the job
+    type. `@Deployment` deploys resources at start-up.
+  source:
+    url: https://docs.camunda.io/docs/8.8/apis-tools/camunda-spring-boot-starter/getting-started/
+    version: '8.8'
+
+- id: d-ext-idempotent
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: Why must job worker code be idempotent?
+  options:
+    - Jobs are delivered at least once, so a job can be worked on more than once
+    - Jobs are delivered at most once, so a lost job must be recreated by hand
+    - Zeebe runs each job on every worker of that type at the same time
+    - The Java client only allows a method to run once per process instance
+  correctIndexes: [0]
+  explanation: >-
+    A job can be handed out again, for example after a timeout, so Zeebe is an "at least once" system
+    for job delivery. Running the code twice must not cause harm.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-ext-timeout
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: A worker activates a job, but does not complete it within its timeout. What can happen?
+  options:
+    - Zeebe can reassign the job to another worker
+    - Zeebe immediately creates an incident for the job
+    - Zeebe cancels the process instance
+    - Zeebe marks the job as complete, and moves on
+  correctIndexes: [0]
+  explanation: >-
+    The timeout is how long a job is assigned to the worker. After that it can be reassigned, which
+    is why a slow worker can see its job done twice.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-ext-fail-job
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: A worker sends a fail job command with `retries` set to 0. What happens?
+  options:
+    - An incident is raised, and the job is not retried until it is resolved
+    - The job is retried at once, using the default of three retries
+    - The process instance takes the nearest error boundary event
+    - The job is deleted, and the process instance continues
+  correctIndexes: [0]
+  explanation: >-
+    The worker sets the remaining retries when it fails a job. Above zero, the job is retried. At
+    zero or below, an incident is raised.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-ext-unhandled-error
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: A worker throws a BPMN error, but nothing in the process catches that error. What happens?
+  options:
+    - An incident is raised
+    - The error is ignored, and the job counts as complete
+    - The job is retried until its retries run out
+    - The process instance is ended as completed
+  correctIndexes: [0]
+  explanation: A thrown error that is not caught raises an incident on the element that threw it.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/error-events/
+    version: '8.8'
+
+- id: d-ext-fetch-variables
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: >-
+    A process instance holds many large variables, but a worker needs only two. Which job worker
+    option limits what it receives?
+  options: [fetchVariables, maxJobsActive, timeout, tenantIds]
+  correctIndexes: [0]
+  explanation: >-
+    `fetchVariables` lists the variables the worker needs. If the list is empty, all the process
+    instance's variables are requested.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/job-workers/
+    version: '8.8'
+
+- id: d-ext-rest-api
+  track: developer
+  domain: extensions-integrations
+  difficulty: easy
+  stem: >-
+    Your application needs to start process instances, query them, and complete user tasks, over
+    REST. Which API is built for that in Camunda 8.8?
+  options:
+    - The Orchestration Cluster REST API
+    - The Administration API
+    - The Web Modeler API
+    - The Console API
+  correctIndexes: [0]
+  explanation: >-
+    The Orchestration Cluster REST API lets you start, manage, and query process instances, complete
+    user tasks, resolve incidents, and manage variables.
+  source:
+    url: https://docs.camunda.io/docs/8.8/apis-tools/orchestration-cluster-api-rest/orchestration-cluster-api-rest-overview/
+    version: '8.8'
+
+- id: d-ext-message-correlation
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: Which two values decide which subscription a published message correlates to?
+  options:
+    - The message name and the correlation key
+    - The process definition key and the job type
+    - The message ID and the time-to-live
+    - The tenant ID and the variables
+  correctIndexes: [0]
+  explanation: >-
+    Correlation is based on subscriptions that hold the message name and the correlation key. The
+    time-to-live only sets how long the message is buffered.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/messages/
+    version: '8.8'
+
+- id: d-ext-deploy-client
+  track: developer
+  domain: extensions-integrations
+  difficulty: easy
+  stem: Using the Camunda Java client, which command deploys a BPMN file?
+  options:
+    - newDeployResourceCommand
+    - newCreateInstanceCommand
+    - newActivateJobsCommand
+    - newPublishMessageCommand
+  correctIndexes: [0]
+  explanation: >-
+    `newDeployResourceCommand` deploys resources, such as a BPMN file added with
+    `addResourceFromClasspath`.
+  source:
+    url: https://docs.camunda.io/docs/8.8/apis-tools/java-client/getting-started/
+    version: '8.8'
+
+- id: d-ext-connector-sdk
+  track: developer
+  domain: extensions-integrations
+  difficulty: medium
+  stem: >-
+    You want to build a reusable connector of your own in Java. What do you use, and which annotation
+    marks the outbound function?
+  options:
+    - The Connector SDK, with @OutboundConnector
+    - The Connector SDK, with @JobWorker
+    - The Spring Boot Starter, with @Deployment
+    - The Web Modeler API, with @OutboundConnector
+  correctIndexes: [0]
+  explanation: >-
+    The Connector SDK is for developing custom connectors in Java. An outbound connector's class is
+    marked with `@OutboundConnector`, and implements `OutboundConnectorFunction`.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/connectors/custom-built-connectors/connector-sdk/
+    version: '8.8'

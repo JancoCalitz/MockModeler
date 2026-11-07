@@ -1,0 +1,13 @@
+- id: d-case-payments
+  track: developer
+  title: Fictional case study, a payments process
+  body: |
+    A fictional online shop runs its checkout on Camunda 8.8.
+
+    - The Charge card service task has a Spring Boot job worker that calls an external payment
+      provider. The job timeout is 30 seconds.
+    - During busy periods, the provider can take over a minute to respond.
+    - If the provider declines a card, the customer should be asked for another one. The model has a
+      path for this.
+    - The provider is sometimes unavailable, and answers with an HTTP 503. It usually recovers within
+      a few minutes.

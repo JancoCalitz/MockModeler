@@ -1,0 +1,162 @@
+- id: d-model-bpmn-error
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: >-
+    The Charge card worker throws a BPMN error with the code `CARD_DECLINED`, which the highlighted
+    boundary event catches. What happens?
+  diagram:
+    file: charge-with-error
+    highlight: [Boundary_Error]
+    description: >-
+      After the start event comes the service task Charge card, then the service task Confirm order
+      and an end event. An error boundary event named Card declined, with the code CARD_DECLINED, is
+      attached to Charge card. It leads to the service task Ask for another card and its own end
+      event.
+  options:
+    - Charge card is terminated, and Ask for another card runs next
+    - The job is retried until its retries run out, then Ask for another card runs
+    - An incident is raised, and Ask for another card runs once it is resolved
+    - Confirm order and Ask for another card run at the same time
+  correctIndexes: [0]
+  explanation: >-
+    A thrown BPMN error is matched by its code against error events, starting at the scope where it
+    was thrown. The catching boundary event terminates the task, and the process continues from it.
+    Retries are for failed jobs, not for BPMN errors.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/error-events/
+    version: '8.8'
+
+- id: d-model-event-gateway-rule
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: >-
+    You want to add a third way out of the highlighted gateway. Which element can its new sequence
+    flow connect to directly?
+  diagram:
+    file: payment-wait
+    highlight: [Gateway_Wait]
+    description: >-
+      After the service task Send invoice comes an event-based gateway. It leads to a message catch
+      event, Payment received, followed by the service task Deliver order, and to a timer catch
+      event of 14 days, followed by the service task Cancel order.
+  options:
+    - A signal intermediate catch event
+    - A service task
+    - An exclusive gateway
+    - An end event
+  correctIndexes: [0]
+  explanation: >-
+    Each outgoing flow of an event-based gateway must connect to an intermediate catch event of type
+    timer, message, or signal.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/event-based-gateways/
+    version: '8.8'
+
+- id: d-model-fix-merge
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: Send report runs twice in this model. What is the correct fix?
+  diagram:
+    file: report-parallel-merge
+    highlight: [Merge]
+    description: >-
+      After the start event, a parallel gateway splits into the service tasks Collect sales and
+      Collect costs. Both lead into an exclusive gateway, followed by the service task Send report
+      and the end event.
+  options:
+    - Replace the highlighted gateway with a parallel gateway
+    - Add a condition to the highlighted gateway's outgoing flow
+    - Replace the first parallel gateway with an exclusive gateway
+    - Mark Send report as a multi-instance activity
+  correctIndexes: [0]
+  explanation: >-
+    Two tokens reach the merge, and an exclusive gateway passes each one on. A parallel gateway waits
+    for them, and continues once. Changing the split would stop the two tasks running together.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/parallel-gateways/
+    version: '8.8'
+
+- id: d-model-fix-join
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: Tickets get stuck at the highlighted gateway. What is the correct fix?
+  diagram:
+    file: routing-parallel-join
+    highlight: [Join]
+    description: >-
+      After the start event, an exclusive gateway named Type routes to the user task Handle hardware
+      when the type is hardware, or to the user task Handle software when the type is software. Both
+      lead into a parallel gateway, followed by the service task Close ticket and the end event.
+  options:
+    - Replace the highlighted gateway with an exclusive gateway
+    - Add a default flow to the highlighted gateway
+    - Add a timer boundary event to Close ticket
+    - Increase the job retries on Close ticket
+  correctIndexes: [0]
+  explanation: >-
+    Only one path ever runs, so a parallel join waits forever for a token that never comes. An
+    exclusive gateway lets the one token continue.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/exclusive-gateways/
+    version: '8.8'
+
+- id: d-model-no-default
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: >-
+    Suppose the highlighted gateway's default flow is removed, leaving only the `amount > 1000` flow
+    and another flow with the condition `amount <= 1000`. What happens if `amount` is 500, and what
+    if no condition were true?
+  diagram:
+    file: order-routing
+    highlight: [Gateway_Amount]
+    description: >-
+      A process starts, runs the service task Check order, and reaches an exclusive gateway named
+      Amount. A flow labelled amount > 1000 leads to the user task Manager approval. A default flow
+      goes straight to a merging gateway, which the approval task also leads to. After the merge
+      comes the service task Ship order, then the end event.
+  options:
+    - At 500 the second flow is taken. With no true condition, an incident is created
+    - At 500 the second flow is taken. With no true condition, the instance ends
+    - At 500 an incident is created. With no true condition, the first flow is taken
+    - At 500 each flow is taken. With no true condition, the last flow is taken
+  correctIndexes: [0]
+  explanation: >-
+    The gateway takes the first flow whose condition is true. If none is true and there is no default
+    flow, an incident is created.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/exclusive-gateways/
+    version: '8.8'
+
+- id: d-model-timer-cycle
+  track: developer
+  domain: modeling
+  difficulty: medium
+  stem: >-
+    The highlighted non-interrupting timer should send a reminder every 4 hours, at most 3 times.
+    Which timer definition does that?
+  diagram:
+    file: contract-reminder
+    highlight: [Boundary_Reminder]
+    description: >-
+      After the start event comes the user task Review contract, then the service task Archive
+      contract and an end event. A non-interrupting timer boundary event is attached to the review
+      task. It leads to the service task Send reminder and its own end event.
+  options:
+    - The time cycle R3/PT4H
+    - The time duration PT12H
+    - The time cycle R4/PT3H
+    - The time date P3DT4H
+  correctIndexes: [0]
+  explanation: >-
+    An ISO 8601 repeating interval gives the repetitions and the period, as in `R5/PT10S` for every
+    10 seconds, up to five times. A cycle suits a non-interrupting boundary event, as the activity
+    stays open between firings.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/timer-events/
+    version: '8.8'

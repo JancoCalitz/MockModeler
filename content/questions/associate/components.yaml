@@ -1,0 +1,205 @@
+- id: a-comp-zeebe
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: Which Camunda 8 component is the engine that executes BPMN processes?
+  options: [Zeebe, Operate, Optimize, Console]
+  correctIndexes: [0]
+  explanation: Zeebe is the process automation engine that powers Camunda 8.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/zeebe/zeebe-overview/
+    version: '8.7'
+
+- id: a-comp-operate
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: >-
+    A process instance has stopped with an error in production. Which component should an operator
+    open to inspect it and resolve the problem?
+  options: [Operate, Tasklist, Web Modeler, Optimize]
+  correctIndexes: [0]
+  explanation: >-
+    Operate is for monitoring and troubleshooting process instances, including resolving incidents
+    and updating variables.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/operate/operate-introduction/
+    version: '8.7'
+
+- id: a-comp-tasklist
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: Where can business users claim and complete the user tasks assigned to them, out of the box?
+  options: [Tasklist, Operate, Console, Desktop Modeler]
+  correctIndexes: [0]
+  explanation: >-
+    Tasklist is the ready-to-use application for people to work on user tasks. You can also build
+    your own task interface against the API.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/tasklist/introduction-to-tasklist/
+    version: '8.7'
+
+- id: a-comp-optimize
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: >-
+    A process owner wants reports on how long each step takes across thousands of completed
+    instances, to find bottlenecks. Which component fits best?
+  options: [Optimize, Operate, Tasklist, Zeebe]
+  correctIndexes: [0]
+  explanation: >-
+    Optimize provides reports, dashboards, and analysis of process data over time. Operate focuses
+    on individual running instances and their problems.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/optimize/what-is-optimize/
+    version: '8.7'
+
+- id: a-comp-web-modeler
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: >-
+    A business analyst and a developer want to edit the same BPMN diagram together in a browser,
+    with nothing to install. Which tool should they use?
+  options: [Web Modeler, Desktop Modeler, Operate, Tasklist]
+  correctIndexes: [0]
+  explanation: >-
+    Web Modeler runs in the browser and is built for collaboration. Desktop Modeler is an
+    application installed locally.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/about-modeler/
+    version: '8.7'
+
+- id: a-comp-console
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: In Camunda 8 SaaS, where do you create clusters and manage them?
+  options: [Console, Operate, Tasklist, Optimize]
+  correctIndexes: [0]
+  explanation: Console is where you create, configure, and manage Camunda 8 clusters and API clients.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/console/introduction-to-console/
+    version: '8.7'
+
+- id: a-comp-connectors
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: >-
+    A process needs to post a message to a team chat. Which feature lets you configure this in the
+    model, using a ready-made integration instead of writing a job worker?
+  options: [A connector, A decision table, An execution listener, A call activity]
+  correctIndexes: [0]
+  explanation: >-
+    Connectors are reusable integrations with external systems. You configure one in the model,
+    through its element template, without writing integration code.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/connectors/introduction-to-connectors/
+    version: '8.7'
+
+- id: a-comp-identity
+  track: associate
+  domain: camunda-components
+  difficulty: medium
+  stem: In a Self-Managed installation, which component manages authentication and authorization?
+  options: [Identity, Operate, Zeebe Gateway, Optimize]
+  correctIndexes: [0]
+  explanation: >-
+    Identity manages authentication, access, and authorization for users and applications in
+    Camunda 8 Self-Managed.
+  source:
+    url: https://docs.camunda.io/docs/8.7/self-managed/identity/what-is-identity/
+    version: '8.7'
+
+- id: a-comp-exporters
+  track: associate
+  domain: camunda-components
+  difficulty: hard
+  stem: In a Self-Managed cluster, how does process data reach tools such as Operate?
+  options:
+    - Zeebe exporters write the event stream to storage that the tools read from
+    - Operate queries each broker's partitions directly whenever a page is opened
+    - Job workers send a copy of their variables to Operate as they finish
+    - Web Modeler pushes each instance's state to Operate after deployment
+  correctIndexes: [0]
+  explanation: >-
+    Brokers keep their own state as an event stream. Exporters send that stream to external storage,
+    such as Elasticsearch, and the web applications read it from there.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/zeebe/technical-concepts/architecture/
+    version: '8.7'
+
+- id: a-comp-incident
+  track: associate
+  domain: camunda-components
+  difficulty: medium
+  stem: Which situation creates an incident?
+  options:
+    - A job fails and has no retries left
+    - A user task stays unclaimed for over a week
+    - A process instance reaches its end event
+    - A new version of the process is deployed
+  correctIndexes: [0]
+  explanation: >-
+    An incident means an instance is stuck and needs someone to act. A failed job with no retries
+    left is the classic case. A waiting user task is normal behaviour.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/incidents/
+    version: '8.7'
+
+- id: a-comp-forms
+  track: associate
+  domain: camunda-components
+  difficulty: easy
+  stem: A user task needs an input form in Tasklist. How can you create one with Camunda's own tools?
+  options:
+    - Design a Camunda Form in a Modeler, and link it to the user task
+    - Write a job worker that draws the form on the user's screen
+    - Add the form's fields as rows of a DMN decision table
+    - Configure the form's layout on the cluster in Console
+  correctIndexes: [0]
+  explanation: >-
+    Camunda Forms are designed in Web Modeler or Desktop Modeler, and linked to a user task. Tasklist
+    then shows the form for that task.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/user-tasks/
+    version: '8.7'
+
+- id: a-comp-partitions
+  track: associate
+  domain: camunda-components
+  difficulty: hard
+  stem: What is a partition in Zeebe?
+  options:
+    - A persistent stream of process events, shared out among the brokers like a shard
+    - A folder in Web Modeler that holds related diagrams and forms
+    - A section of a BPMN diagram that shows one participant's work
+    - A group of job workers that handle the same job type
+  correctIndexes: [0]
+  explanation: >-
+    A partition is a persistent stream of process-related events. Partitions are distributed among
+    the brokers in a cluster, which is part of how Zeebe scales.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/zeebe/technical-concepts/partitions/
+    version: '8.7'
+
+- id: a-comp-job-worker
+  track: associate
+  domain: camunda-components
+  difficulty: medium
+  stem: What happens when a process instance reaches a service task?
+  options:
+    - Zeebe creates a job, and waits until a worker for that job type completes it
+    - Zeebe runs the task's code itself, inside the broker, and carries on
+    - Zeebe calls a web address that was set when the cluster was created
+    - Zeebe adds the task to Tasklist, for a person to run the code
+  correctIndexes: [0]
+  explanation: >-
+    Zeebe does not run business code. It creates a job, and a job worker subscribed to that job type
+    processes and completes it. Only then does the instance continue.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/concepts/job-workers/
+    version: '8.7'

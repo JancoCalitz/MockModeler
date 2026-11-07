@@ -1,0 +1,5 @@
+dist
+dist-locked
+node_modules
+package-lock.json
+content/tests

@@ -1,0 +1,222 @@
+- id: a-bpmn-default-flow
+  track: associate
+  domain: interpret-bpmn
+  difficulty: easy
+  stem: An order with an `amount` of 500 reaches the highlighted gateway. What happens next?
+  diagram:
+    file: order-routing
+    highlight: [Gateway_Amount]
+    description: >-
+      A process starts, runs the service task Check order, and reaches an exclusive gateway named
+      Amount. A flow labelled amount > 1000 leads to the user task Manager approval. A default flow
+      goes straight to a merging gateway, which the approval task also leads to. After the merge
+      comes the service task Ship order, then the end event.
+  options:
+    - The default flow is taken, so the order skips approval and goes on to Ship order
+    - The amount > 1000 flow is taken, because every order needs a manager's approval
+    - Every outgoing flow is taken, and the merge waits for them to finish
+    - The process instance stops at the gateway, and an incident is raised
+  correctIndexes: [0]
+  explanation: >-
+    An exclusive gateway takes the first flow whose condition is true. No condition is true for 500,
+    so the default flow is taken. An incident would only arise if there were no default flow.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/exclusive-gateways/
+    version: '8.7'
+
+- id: a-bpmn-parallel-join
+  track: associate
+  domain: interpret-bpmn
+  difficulty: easy
+  stem: >-
+    Pack goods has finished, but Create invoice is still running. What is the state of Notify
+    customer?
+  diagram:
+    file: parallel-fulfilment
+    highlight: [Join]
+    description: >-
+      After the start event, a parallel gateway splits into the service tasks Pack goods and Create
+      invoice. A second parallel gateway joins them, followed by the service task Notify customer
+      and the end event.
+  options:
+    - It has not started, as the join waits for a token from each incoming flow
+    - It starts now, as the first token to reach the join passes straight through
+    - It starts now, and runs a second time when Create invoice finishes
+    - It will never start, as the two tasks finished at different times
+  correctIndexes: [0]
+  explanation: >-
+    A parallel gateway that joins flows waits until a token has arrived on every incoming flow.
+    Only then does it continue, with a single token.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/parallel-gateways/
+    version: '8.7'
+
+- id: a-bpmn-interrupting-timer
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  stem: >-
+    Nobody has completed Approve request after 24 hours, so the highlighted solid-line timer event
+    fires. What happens?
+  diagram:
+    file: approval-timer
+    highlight: [Boundary_Timer]
+    description: >-
+      After the start event comes the user task Approve request, which leads to an end event. An
+      interrupting timer boundary event of 24 hours is attached to the task. It leads to the user
+      task Escalate to director and its own end event.
+  options:
+    - Approve request is cancelled, and the token moves on to Escalate to director
+    - Approve request stays open, while Escalate to director runs alongside it
+    - Approve request stays open, and the timer restarts for another 24 hours
+    - The process instance raises an incident, and waits for an operator
+  correctIndexes: [0]
+  explanation: >-
+    A solid border marks an interrupting boundary event. When it fires, the activity it is attached
+    to is terminated, and the process continues along the event's outgoing flow.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/timer-events/
+    version: '8.7'
+
+- id: a-bpmn-non-interrupting-timer
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  stem: >-
+    Four hours into Review contract, the highlighted timer event with the dashed border fires. What
+    is true afterwards?
+  diagram:
+    file: contract-reminder
+    highlight: [Boundary_Reminder]
+    description: >-
+      After the start event comes the user task Review contract, then the service task Archive
+      contract and an end event. A non-interrupting timer boundary event of 4 hours is attached to
+      the review task. It leads to the service task Send reminder and its own end event.
+  options:
+    - Review contract is still open, and Send reminder runs alongside it
+    - Review contract is cancelled, and only Send reminder runs from then on
+    - Review contract is completed automatically, then Archive contract runs
+    - Send reminder is queued until Review contract has been completed
+  correctIndexes: [0]
+  explanation: >-
+    A dashed border marks a non-interrupting boundary event. The activity keeps running, and a new
+    token follows the event's outgoing flow at the same time.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/timer-events/
+    version: '8.7'
+
+- id: a-bpmn-event-gateway
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  stem: >-
+    The instance is waiting at the highlighted gateway. The Payment received message arrives on day
+    three. What happens to the 14-day timer?
+  diagram:
+    file: payment-wait
+    highlight: [Gateway_Wait]
+    description: >-
+      After the service task Send invoice comes an event-based gateway. It leads to a message catch
+      event, Payment received, followed by the service task Deliver order, and to a timer catch
+      event of 14 days, followed by the service task Cancel order.
+  options:
+    - It no longer applies, as only the first event to occur is followed
+    - It keeps running, and Cancel order also runs on day 14 unless delivery has finished
+    - It keeps running, and Deliver order waits until the 14 days have passed
+    - It is restarted, so the customer gets another 14 days to pay
+  correctIndexes: [0]
+  explanation: >-
+    An event-based gateway waits for one of its events. The first to occur decides the path, and no
+    other event of that gateway can be triggered afterwards.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/event-based-gateways/
+    version: '8.7'
+
+- id: a-bpmn-wrong-merge
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  stem: What is wrong with this model?
+  diagram:
+    file: report-parallel-merge
+    description: >-
+      After the start event, a parallel gateway splits into the service tasks Collect sales and
+      Collect costs. Both lead into an exclusive gateway, followed by the service task Send report
+      and the end event.
+  options:
+    - Send report runs twice, as an exclusive gateway passes each token straight on
+    - Send report never runs, as an exclusive gateway cannot have two incoming flows
+    - Collect costs is skipped, as the exclusive gateway only accepts the first token
+    - Nothing is wrong, as the exclusive gateway waits for the two collecting tasks
+  correctIndexes: [0]
+  explanation: >-
+    An exclusive gateway does not wait when it joins flows, so each token passes through it. Both
+    tokens from the split reach Send report, and it runs twice. A parallel gateway should join these
+    flows.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/exclusive-gateways/
+    version: '8.7'
+
+- id: a-bpmn-stuck-join
+  track: associate
+  domain: interpret-bpmn
+  difficulty: medium
+  stem: What happens to a ticket of type `hardware` in this model?
+  diagram:
+    file: routing-parallel-join
+    highlight: [Join]
+    description: >-
+      After the start event, an exclusive gateway named Type routes to the user task Handle hardware
+      when the type is hardware, or to the user task Handle software when the type is software. Both
+      lead into a parallel gateway, followed by the service task Close ticket and the end event.
+  options:
+    - It waits at the parallel gateway forever, and Close ticket never runs
+    - It passes through the parallel gateway, and Close ticket runs once
+    - It passes through the parallel gateway, and Close ticket runs twice
+    - It raises an incident as soon as it reaches the exclusive gateway
+  correctIndexes: [0]
+  explanation: >-
+    The exclusive gateway sends one token down one path, but a parallel join waits for a token on
+    every incoming flow. The other token never comes, so the instance is stuck. An exclusive gateway
+    should merge these flows.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/parallel-gateways/
+    version: '8.7'
+
+- id: a-bpmn-call-activity
+  track: associate
+  domain: interpret-bpmn
+  difficulty: easy
+  stem: >-
+    A diagram shows an activity with a thick border, named Check credit. Which statement describes
+    this call activity?
+  options:
+    - It starts a separate process that is defined and deployed on its own
+    - It expands inline into steps that belong to the same process definition
+    - It sends a message to a system outside the process, and carries on at once
+    - It asks a person to complete a form before the process carries on
+  correctIndexes: [0]
+  explanation: >-
+    A call activity creates an instance of another process, referenced by its ID, so one process can
+    be reused by many others. The calling process waits for it to complete.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/call-activities/
+    version: '8.7'
+
+- id: a-bpmn-task-markers
+  track: associate
+  domain: interpret-bpmn
+  difficulty: easy
+  stem: A task in a diagram has a gear icon in its corner. What does this tell you about the step?
+  options:
+    - It is a service task, carried out by software rather than by a person
+    - It is a user task, carried out by a person using a form
+    - It is a business rule task, which evaluates a decision table
+    - It is a manual task, carried out with no connection to any system
+  correctIndexes: [0]
+  explanation: >-
+    Gears mark a service task. In Camunda 8, it creates a job, which a job worker or connector
+    carries out.
+  source:
+    url: https://docs.camunda.io/docs/8.7/components/modeler/bpmn/service-tasks/
+    version: '8.7'

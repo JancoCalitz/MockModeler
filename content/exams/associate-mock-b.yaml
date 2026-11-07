@@ -1,0 +1,24 @@
+id: associate-mock-b
+track: associate
+name: Associate Mock B (20 questions)
+questions:
+  - a-comp-tasklist
+  - a-bpmn-parallel-join
+  - a-use-legacy-rpa
+  - a-orch-task-vs-process
+  - a-comp-web-modeler
+  - a-dmn-collect
+  - a-bpmn-non-interrupting-timer
+  - a-comp-console
+  - a-task-business-rule
+  - a-use-transient-failure
+  - a-comp-identity
+  - a-dmn-which-rules
+  - a-orch-executable
+  - a-bpmn-stuck-join
+  - a-comp-forms
+  - a-use-start-webhook
+  - a-dmn-unique-violated
+  - a-comp-partitions
+  - a-orch-visibility
+  - a-bpmn-task-markers

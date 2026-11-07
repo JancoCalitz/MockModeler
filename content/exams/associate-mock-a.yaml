@@ -1,0 +1,24 @@
+id: associate-mock-a
+track: associate
+name: Associate Mock A (20 questions)
+questions:
+  - a-bpmn-default-flow
+  - a-comp-zeebe
+  - a-use-human-approval
+  - a-dmn-unique-output
+  - a-comp-operate
+  - a-orch-definition
+  - a-bpmn-interrupting-timer
+  - a-comp-optimize
+  - a-task-rest-connector
+  - a-use-rules-change
+  - a-bpmn-wrong-merge
+  - a-comp-connectors
+  - a-dmn-first
+  - a-comp-incident
+  - a-orch-long-running
+  - a-bpmn-event-gateway
+  - a-use-wait-partner
+  - a-comp-exporters
+  - a-comp-job-worker
+  - a-bpmn-call-activity

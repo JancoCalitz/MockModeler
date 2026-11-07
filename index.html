@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" data-theme="retro80s">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MockModeler</title>
+    <script>
+      // Apply the saved theme and effects before the first paint, so the page never flashes.
+      try {
+        const theme = localStorage.getItem('mockmodeler.theme');
+        if (theme) document.documentElement.dataset.theme = theme;
+        const effects = localStorage.getItem('mockmodeler.effects');
+        if (effects) document.documentElement.dataset.effects = effects;
+      } catch {
+        // Storage is unavailable, so the default theme stays.
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

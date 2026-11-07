@@ -1,0 +1,4 @@
+# Consistent line endings on every platform.
+* text=auto eol=lf
+
+# A build output: keep its bytes exactly as built.

@@ -1,0 +1,153 @@
+- id: d-feel-if
+  track: developer
+  domain: configuring-processes
+  difficulty: easy
+  stem: What does this FEEL expression return?
+  feel:
+    expression: 'if amount > 1000 then "manual" else "auto"'
+    context: { amount: 1500 }
+  options: ['"manual"', '"auto"', 'true', 'null']
+  correctIndexes: [0]
+  explanation: 1500 is greater than 1000, so the `then` branch gives the result.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-control-flow/
+    version: '8.8'
+
+- id: d-feel-index
+  track: developer
+  domain: configuring-processes
+  difficulty: easy
+  stem: What does this FEEL expression return?
+  feel:
+    expression: 'items[1]'
+    context: { items: [10, 20, 30] }
+  options: ['10', '20', '30', 'null']
+  correctIndexes: [0]
+  explanation: FEEL lists are indexed from 1, unlike most programming languages.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-data-types/
+    version: '8.8'
+
+- id: d-feel-missing
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  stem: The `customer` context has no `email` entry. What does this FEEL expression return?
+  feel:
+    expression: 'customer.email'
+    context: { customer: { name: Ada } }
+  options: ['null', '""', 'false', '"Ada"']
+  correctIndexes: [0]
+  explanation: >-
+    Reading a context entry that does not exist gives `null`, so check for it in any expression that
+    relies on the value.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-variables/
+    version: '8.8'
+
+- id: d-feel-filter
+  track: developer
+  domain: configuring-processes
+  difficulty: hard
+  stem: What does this FEEL expression return?
+  feel:
+    expression: 'items[price > 10].name'
+    context:
+      items:
+        - { name: pen, price: 5 }
+        - { name: book, price: 20 }
+        - { name: bag, price: 30 }
+  options: ['["book", "bag"]', '["pen"]', '"book"', '["pen", "book", "bag"]']
+  correctIndexes: [0]
+  explanation: >-
+    The filter keeps the items whose price is above 10, and the path `.name` then reads that entry
+    from each one, giving a list.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-data-types/
+    version: '8.8'
+
+- id: d-feel-for
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  stem: What does this FEEL expression return?
+  feel:
+    expression: 'for x in [1, 2, 3] return x * 2'
+  options: ['[2, 4, 6]', '6', '12', '[1, 2, 3]']
+  correctIndexes: [0]
+  explanation: A `for` expression returns a list holding the result for each element.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/feel/language-guide/feel-control-flow/
+    version: '8.8'
+
+- id: d-conf-output-mapping
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  stem: >-
+    A service task defines one output mapping, from `response.id` to `orderId`. Its worker completes
+    the job with the variables `response` and `debugInfo`. What is merged into the process instance?
+  options:
+    - Only `orderId`
+    - '`orderId`, `response`, and `debugInfo`'
+    - '`response` and `debugInfo`, as the mapping only renames at read time'
+    - Nothing, until an input mapping is added as well
+  correctIndexes: [0]
+  explanation: >-
+    Once an output mapping is defined, the job's variables stay local to the task, and only the
+    mapped results are merged into the process instance.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/variables/
+    version: '8.8'
+
+- id: d-conf-multi-instance
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  stem: >-
+    A multi-instance service task should run once per order line, and gather each result into a list
+    called `results`. Which properties do this?
+  options:
+    - inputCollection, inputElement, outputCollection, and outputElement
+    - taskDefinition, taskHeaders, retries, and timeout
+    - bindingType, versionTag, decisionId, and resultVariable
+    - correlationKey, messageName, timeToLive, and variables
+  correctIndexes: [0]
+  explanation: >-
+    `inputCollection` and `inputElement` define what each instance works on. `outputCollection` names
+    the list, and `outputElement` says what each instance adds to it.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/multi-instance/
+    version: '8.8'
+
+- id: d-conf-message-ttl
+  track: developer
+  domain: configuring-processes
+  difficulty: medium
+  stem: >-
+    A message is published before the matching process instance reaches its message catch event. How
+    can the message still reach that instance?
+  options:
+    - Publish it with a time-to-live long enough to buffer it until a subscription opens
+    - Publish it again from a job worker once a minute until it is accepted
+    - Set a higher number of retries on the message catch event
+    - Nothing can help, as a message with no open subscription is always discarded
+  correctIndexes: [0]
+  explanation: >-
+    A message's time-to-live sets how long it is buffered. Within that time, it can be correlated to
+    an instance whose subscription opens later.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/concepts/messages/
+    version: '8.8'
+
+- id: d-conf-default-retries
+  track: developer
+  domain: configuring-processes
+  difficulty: easy
+  stem: If a service task's task definition does not set `retries`, how many does its job get?
+  options: ['3', '0', '1', '5']
+  correctIndexes: [0]
+  explanation: The `retries` property of a task definition is optional, and defaults to three.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/service-tasks/
+    version: '8.8'

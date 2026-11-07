@@ -1,0 +1,194 @@
+- id: d-dmn-rule-order
+  track: developer
+  domain: decisions-rules
+  difficulty: medium
+  stem: What does this decision return for a Gold customer spending 600?
+  dmn:
+    name: Offers
+    hitPolicy: RULE ORDER
+    inputs:
+      - { label: Tier, expression: tier }
+      - { label: Spend, expression: spend }
+    output: { label: Offer, name: offer }
+    rules:
+      - { when: ['-', '> 500'], then: '"Free shipping"' }
+      - { when: ['"Gold"', '-'], then: '"Lounge pass"' }
+      - { when: ['"Silver"', '-'], then: '"Coupon"' }
+    given: { tier: Gold, spend: 600 }
+  options:
+    - '["Free shipping", "Lounge pass"]'
+    - '["Lounge pass", "Free shipping"]'
+    - '"Free shipping"'
+    - '["Free shipping", "Lounge pass", "Coupon"]'
+  correctIndexes: [0]
+  explanation: Rule order returns the outputs of every matching rule, as a list, in the order of the rules.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.8'
+
+- id: d-dmn-range
+  track: developer
+  domain: decisions-rules
+  difficulty: medium
+  stem: What does this decision return for a package of 20 kg?
+  dmn:
+    name: Box size
+    hitPolicy: UNIQUE
+    inputs:
+      - { label: Weight, expression: weight }
+    output: { label: Box, name: box }
+    rules:
+      - { when: ['[0..20)'], then: '"Small"' }
+      - { when: ['[20..50]'], then: '"Medium"' }
+      - { when: ['> 50'], then: '"Large"' }
+    given: { weight: 20 }
+  options: ['"Medium"', '"Small"', '"Large"', '["Small", "Medium"]']
+  correctIndexes: [0]
+  explanation: >-
+    In `[0..20)`, the closing `)` excludes 20. In `[20..50]`, the `[` includes it, so only rule 2
+    matches.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-rule/
+    version: '8.8'
+
+- id: d-dmn-any
+  track: developer
+  domain: decisions-rules
+  difficulty: hard
+  stem: What does this decision return?
+  dmn:
+    name: Fraud check
+    hitPolicy: ANY
+    inputs:
+      - { label: Country, expression: country }
+      - { label: Amount, expression: amount }
+    output: { label: Result, name: result }
+    rules:
+      - { when: ['"XX"', '-'], then: '"Block"' }
+      - { when: ['-', '> 9000'], then: '"Block"' }
+      - { when: ['"ZA"', '<= 9000'], then: '"Allow"' }
+    given: { country: XX, amount: 9500 }
+  options: ['"Block"', '["Block", "Block"]', '"Allow"', 'null']
+  correctIndexes: [0]
+  explanation: >-
+    Rules 1 and 2 match, and they give the same output, which the Any hit policy allows. It returns
+    that one value. Different outputs would violate the hit policy.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.8'
+
+- id: d-dmn-first-match
+  track: developer
+  domain: decisions-rules
+  difficulty: medium
+  stem: What does this decision return?
+  dmn:
+    name: Priority
+    hitPolicy: FIRST
+    inputs:
+      - { label: Severity, expression: severity }
+      - { label: Customer, expression: customer }
+    output: { label: Priority, name: priority }
+    rules:
+      - { when: ['"Critical"', '-'], then: '"P1"' }
+      - { when: ['"High","Critical"', '"Premium"'], then: '"P2"' }
+      - { when: ['-', '-'], then: '"P3"' }
+    given: { severity: High, customer: Premium }
+  options: ['"P2"', '"P1"', '"P3"', '["P2", "P3"]']
+  correctIndexes: [0]
+  explanation: >-
+    Rule 1 does not match. Rule 2 does, and so does rule 3, which matches everything. First stops at
+    the first match, rule 2.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/dmn/decision-table-hit-policy/
+    version: '8.8'
+
+- id: d-dmn-business-rule-config
+  track: developer
+  domain: decisions-rules
+  difficulty: medium
+  stem: Which two attributes must a business rule task's `zeebe:calledDecision` define?
+  options:
+    - decisionId and resultVariable
+    - decisionKey and outputCollection
+    - formId and bindingType
+    - jobType and retries
+  correctIndexes: [0]
+  explanation: >-
+    `decisionId` names the DMN decision to call, and `resultVariable` names the process variable that
+    stores the result.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/business-rule-tasks/
+    version: '8.8'
+
+- id: d-form-binding
+  track: developer
+  domain: forms
+  difficulty: medium
+  stem: >-
+    A running process should keep using the form deployed together with its own version, even after
+    a newer form is deployed. Which `bindingType` do you set on `zeebe:formDefinition`?
+  options: [deployment, latest, versionTag, fixed]
+  correctIndexes: [0]
+  explanation: >-
+    `deployment` uses the version deployed with the running process version. `latest` uses the newest
+    version when the task is activated, and `versionTag` uses the newest with a given tag.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/bpmn/user-tasks/
+    version: '8.8'
+
+- id: d-form-key
+  track: developer
+  domain: forms
+  difficulty: easy
+  stem: In a Camunda Form, what does a text field's Key property do?
+  options:
+    - Binds the field to a form variable
+    - Sets the keyboard shortcut for the field
+    - Encrypts the field's value when it is stored
+    - Names the job type that handles the field
+  correctIndexes: [0]
+  explanation: >-
+    The key is the variable the field reads its value from and writes its value to, which links the
+    form to the process data.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/modeler/forms/form-element-library/forms-element-library-textfield/
+    version: '8.8'
+
+- id: d-conn-secrets
+  track: developer
+  domain: connectors
+  difficulty: easy
+  stem: How should a connector's configuration refer to a secret called `MY_API_KEY`?
+  options:
+    - '{{secrets.MY_API_KEY}}'
+    - secrets.MY_API_KEY
+    - =env("MY_API_KEY")
+    - ${MY_API_KEY}
+  correctIndexes: [0]
+  explanation: >-
+    Use the `{{secrets.MY_API_KEY}}` form. The docs mark plain `secrets.*` as deprecated. The value
+    stays out of the BPMN file, and is resolved by the connector runtime.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/connectors/use-connectors/
+    version: '8.8'
+
+- id: d-conn-inbound
+  track: developer
+  domain: connectors
+  difficulty: medium
+  stem: >-
+    An external system should start a process instance by calling an HTTP endpoint. Which kind of
+    connector, modeled on which element, fits?
+  options:
+    - An inbound webhook connector, on a start event
+    - An outbound REST connector, on a service task
+    - An inbound webhook connector, on a user task
+    - An outbound REST connector, on a start event
+  correctIndexes: [0]
+  explanation: >-
+    Inbound connectors let external systems reach Camunda, and are modeled as catch events, including
+    start events. Outbound connectors call out from a task.
+  source:
+    url: https://docs.camunda.io/docs/8.8/components/connectors/use-connectors/inbound/
+    version: '8.8'
